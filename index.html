@@ -216,8 +216,9 @@
 
     .td-lot   { font-weight: 700; color: var(--accent2); }
     .td-qty   { font-weight: 600; }
-    .td-cost  { color: var(--green); font-weight: 500; }
-    .td-loss  { color: var(--red);   font-weight: 500; }
+    .td-cost  { color: var(--green);  font-weight: 500; }
+    .td-loss  { color: var(--red);    font-weight: 500; }
+    .td-exit  { color: var(--yellow); font-weight: 500; }
 
     /* ── Summary chips ── */
     .summary {
@@ -398,10 +399,11 @@
 
       // Build rows
       const rows = allLots.map(lot => {
-        const qty  = Math.floor(investment / price / lot) * lot;
-        const cost = qty * price;
+        const qty      = Math.floor(investment / price / lot) * lot;
+        const cost     = qty * price;
+        const lossAmt  = cost * (lossPct / 100);
         const lossExit = price * (1 - lossPct / 100);
-        return { lot, qty, cost, lossExit };
+        return { lot, qty, cost, lossAmt, lossExit };
       });
 
       // ── Render ────────────────────────────────────────────────────────────
@@ -440,7 +442,8 @@
           <td class="td-lot">${fmtN(r.lot)}</td>
           <td class="td-qty">${fmtN(r.qty)}</td>
           <td class="td-cost">₹${fmt(r.cost)}</td>
-          <td class="td-loss">₹${fmt(r.lossExit)}</td>
+          <td class="td-loss">₹${fmt(r.lossAmt)}</td>
+          <td class="td-exit">₹${fmt(r.lossExit)}</td>
         </tr>`).join('');
 
       resultsEl.innerHTML = summaryHTML + `
@@ -453,10 +456,11 @@
                   <th>Lot Size</th>
                   <th>Qty (lots × size)</th>
                   <th>Total Cost</th>
+                  <th>Loss Amount (−${lossPct}%)</th>
                   <th>Exit Price (−${lossPct}%)</th>
                 </tr>
               </thead>
-              <tbody>${tableRows || '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">No lot sizes selected.</td></tr>'}</tbody>
+              <tbody>${tableRows || '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">No lot sizes selected.</td></tr>'}</tbody>
             </table>
           </div>
         </div>`;
