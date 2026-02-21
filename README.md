@@ -10,7 +10,7 @@ A fast, beautiful, single-file web tool to calculate how many lots you can buy w
 - **Custom Lots** — Add any lot sizes (single or comma-separated)
 - **Loss Exit Price** — Defaults to 10%; set any % to instantly see at what price you should exit
 - **Summary Panel** — Max qty, price/share, loss amount, exit price, total amount at a glance
-- **Lot Breakdown Table** — Per lot: quantity, total cost, and exit price
+- **Lot Breakdown Table** — Per lot: quantity, total cost, **loss amount in ₹**, and exit price
 - **Mobile & Desktop Friendly** — Fully responsive layout
 - **No dependencies** — Single `index.html`, loads instantly with zero external JS
 
@@ -31,18 +31,19 @@ A fast, beautiful, single-file web tool to calculate how many lots you can buy w
 
 ## 🧮 How It Works
 
-| Field           | Formula                         |
-| --------------- | ------------------------------- |
-| Qty (for lot N) | `floor(Amount ÷ Price ÷ N) × N` |
-| Total Cost      | `Qty × Price`                   |
-| Exit Price      | `Price × (1 − Loss% ÷ 100)`     |
-| Loss Amount     | `Amount × Loss% ÷ 100`          |
+| Field                    | Formula                              |
+| ------------------------ | ------------------------------------ |
+| Qty (for lot N)          | `floor(Amount ÷ Price ÷ N) × N`      |
+| Total Cost               | `Qty × Price`                        |
+| Loss Amount _(per lot)_  | `Total Cost × (Loss% ÷ 100)`         |
+| Exit Price               | `Price × (1 − Loss% ÷ 100)`          |
+| Loss Amount _(summary)_  | `Amount × (Loss% ÷ 100)`             |
 
 ---
 
 ## 📁 Project Structure
 
-```
+```text
 lot-calculator/
 ├── index.html   # The entire app — single file
 ├── README.md    # This file
