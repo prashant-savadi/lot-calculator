@@ -323,16 +323,22 @@
         <label>📦 Default Lot Sizes</label>
         <div class="lot-group">
           <label class="lot-chip">
-            <input type="checkbox" value="25"  id="lot25"  checked /> 25
+            <input type="checkbox" value="20"  id="lot20"  checked /> 20
           </label>
           <label class="lot-chip">
-            <input type="checkbox" value="30"  id="lot30"  checked /> 30
+            <input type="checkbox" value="25"  id="lot25"  /> 25
           </label>
           <label class="lot-chip">
-            <input type="checkbox" value="50"  id="lot50"  checked /> 50
+            <input type="checkbox" value="30"  id="lot30"  /> 30
           </label>
           <label class="lot-chip">
-            <input type="checkbox" value="75"  id="lot75"  checked /> 75
+            <input type="checkbox" value="50"  id="lot50"  /> 50
+          </label>
+          <label class="lot-chip">
+            <input type="checkbox" value="60"  id="lot60"  checked /> 60
+          </label>
+          <label class="lot-chip">
+            <input type="checkbox" value="75"  id="lot75"  /> 75
           </label>
         </div>
       </div>
@@ -368,7 +374,7 @@
     }
 
     function getCheckedLots() {
-      return ['25','30','50','75']
+      return ['20','25','30','50','60','75']
         .filter(v => document.getElementById('lot' + v).checked)
         .map(Number);
     }
