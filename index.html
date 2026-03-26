@@ -516,12 +516,14 @@
 
       const tableRows = rows.map(r => `
         <tr>
-          <td class="td-lot">${fmtN(r.lot)}</td>
+          <td class="td-lot">
+            <span class="copy-btn" onclick="copyVal('${r.qty}, ${r.lossExit.toFixed(2)}')" title="Copy Qty & Exit">${fmtN(r.lot)}</span>
+          </td>
           <td class="td-qty">
-            <span class="copy-btn" onclick="copyVal('${r.qty}')" title="Tap to copy">${fmtN(r.qty)}</span>
+            <span class="copy-btn" onclick="copyVal('${r.qty}')" title="Copy Qty">${fmtN(r.qty)}</span>
           </td>
           <td class="td-exit">
-            <span class="copy-btn" onclick="copyVal('${r.lossExit.toFixed(2)}')" title="Tap to copy">${fmt(r.lossExit)}</span>
+            <span class="copy-btn" onclick="copyVal('${r.lossExit.toFixed(2)}')" title="Copy Exit Price">${fmt(r.lossExit)}</span>
           </td>
           <td class="td-loss">${fmt(r.lossAmt)}</td>
           <td class="td-cost">${fmt(r.cost)}</td>
