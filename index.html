@@ -34,16 +34,16 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding: 24px 16px 48px;
+      padding: 12px 8px 32px;
     }
 
     /* ── Header ── */
     header {
       text-align: center;
-      margin-bottom: 32px;
+      margin-bottom: 12px;
     }
     header h1 {
-      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-size: 1.4rem;
       font-weight: 700;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       -webkit-background-clip: text;
@@ -52,9 +52,7 @@
       letter-spacing: -0.5px;
     }
     header p {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-top: 6px;
+      display: none;
     }
 
     /* ── Card ── */
@@ -62,22 +60,25 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 24px;
+      padding: 16px;
       max-width: 680px;
-      margin: 0 auto 28px;
+      margin: 0 auto 16px;
     }
 
     /* ── Form Grid ── */
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 12px;
     }
     @media (max-width: 480px) {
-      .form-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr 1fr; }
+      th { padding: 8px 4px !important; font-size: 0.6rem !important; letter-spacing: 0 !important; }
+      td { padding: 8px 4px !important; font-size: 0.75rem !important; }
+      .copy-btn { padding: 4px 6px !important; font-size: 0.7rem; }
     }
 
-    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field { display: flex; flex-direction: column; gap: 6px; justify-content: flex-end; }
     .field.full { grid-column: 1 / -1; }
 
     label {
@@ -188,25 +189,25 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9rem;
-      min-width: 380px;
+      font-size: 0.85rem;
+      min-width: 320px;
     }
     thead tr {
       background: var(--surface2);
     }
     th {
-      padding: 12px 16px;
+      padding: 10px 12px;
       text-align: left;
-      font-size: 0.72rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.4px;
       text-transform: uppercase;
       color: var(--muted);
       border-bottom: 1px solid var(--border);
       white-space: nowrap;
     }
     td {
-      padding: 12px 16px;
+      padding: 10px 12px;
       border-bottom: 1px solid rgba(46,51,72,.5);
       color: var(--text);
     }
@@ -247,6 +248,54 @@
       display: none;
     }
     .error-msg.show { display: block; }
+
+    /* ── Details Copy ── */
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text);
+      transition: background var(--tr), border-color var(--tr), color var(--tr), transform 0.1s ease;
+      user-select: none;
+    }
+    .copy-btn:hover {
+      background: rgba(108,99,255,.15);
+      border-color: var(--accent);
+      color: var(--accent2);
+    }
+    .copy-btn:active {
+      transform: scale(0.96);
+    }
+
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: var(--green);
+      color: #111;
+      text-align: center;
+      border-radius: 8px;
+      padding: 12px 16px;
+      position: fixed;
+      z-index: 1000;
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%);
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 0.3s, bottom 0.3s;
+    }
+    #toast.show {
+      visibility: visible;
+      opacity: 1;
+      bottom: 50px;
+    }
 
     /* ── Fade-in ── */
     @keyframes fadeUp {
@@ -293,25 +342,39 @@
   <!-- INPUT CARD -->
   <div class="card">
     <div class="form-grid">
-
       <!-- Amount -->
       <div class="field">
         <label for="investment">💰 Amount (₹)</label>
-        <input type="number" id="investment" placeholder="e.g. 100000" min="0" step="any" />
+        <input type="number" id="investment" placeholder="100000" min="0" step="any" />
       </div>
 
       <!-- Price -->
       <div class="field">
-        <label for="price">📈 Current Price (₹)</label>
-        <input type="number" id="price" placeholder="e.g. 250" min="0" step="any" />
+        <label for="price">📈 Price (₹)</label>
+        <input type="number" id="price" placeholder="250" min="0" step="any" />
       </div>
 
       <!-- Loss % -->
       <div class="field">
-        <label for="lossPercent">🔻 Loss % (exit trigger)</label>
-        <input type="number" id="lossPercent" placeholder="Default: 10" min="0" max="100" step="any" value="10" />
+        <label for="lossPercent">🔻 Loss %</label>
+        <input type="number" id="lossPercent" placeholder="15" min="0" max="100" step="any" value="15" />
       </div>
 
+      <!-- Calculate Button -->
+      <div class="field">
+        <button class="btn" onclick="calculate()" id="calcBtn" style="margin-top: 0;">Calculate</button>
+      </div>
+    </div>
+    <p class="error-msg" id="errMsg">⚠️ Valid positive values needed.</p>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results"></div>
+
+  <!-- SETTINGS -->
+  <div class="card" style="margin-top: 16px;">
+    <div class="section-title">⚙️ Lot Size Settings</div>
+    <div class="form-grid" style="grid-template-columns: 1fr;">
       <!-- Custom lots -->
       <div class="field">
         <label for="customLots">➕ Custom Lots (comma-separated)</label>
@@ -319,7 +382,7 @@
       </div>
 
       <!-- Lot size toggles -->
-      <div class="field full">
+      <div class="field">
         <label>📦 Default Lot Sizes</label>
         <div class="lot-group">
           <label class="lot-chip">
@@ -335,24 +398,18 @@
             <input type="checkbox" value="50"  id="lot50"  /> 50
           </label>
           <label class="lot-chip">
-            <input type="checkbox" value="60"  id="lot60"  checked /> 60
+            <input type="checkbox" value="60"  id="lot60"  /> 60
+          </label>
+          <label class="lot-chip">
+            <input type="checkbox" value="65"  id="lot65"  checked /> 65
           </label>
           <label class="lot-chip">
             <input type="checkbox" value="75"  id="lot75"  /> 75
           </label>
         </div>
       </div>
-
     </div>
-
-    <p class="error-msg" id="errMsg">⚠️ Please enter valid positive values for Amount and Price.</p>
-
-    <br />
-    <button class="btn" onclick="calculate()" id="calcBtn">Calculate</button>
   </div>
-
-  <!-- RESULTS -->
-  <div id="results"></div>
 
   <footer>Lot Calculator &mdash; built for speed &amp; clarity</footer>
 
@@ -366,6 +423,20 @@
     const fmt  = n => n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const fmtN = n => n.toLocaleString('en-IN');
 
+    function copyVal(val) {
+      navigator.clipboard.writeText(val).then(() => {
+        let toast = document.getElementById('toast');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.id = 'toast';
+          document.body.appendChild(toast);
+        }
+        toast.textContent = `Copied to clipboard: ${val}`;
+        toast.className = 'toast show';
+        setTimeout(() => { toast.className = toast.className.replace('show', ''); }, 2500);
+      });
+    }
+
     function parseCustomLots(raw) {
       if (!raw.trim()) return [];
       return raw.split(',')
@@ -374,7 +445,7 @@
     }
 
     function getCheckedLots() {
-      return ['20','25','30','50','60','75']
+      return ['20','25','30','50','60','65','75']
         .filter(v => document.getElementById('lot' + v).checked)
         .map(Number);
     }
@@ -384,7 +455,7 @@
       const errEl = document.getElementById('errMsg');
       const investment = parseFloat(document.getElementById('investment').value);
       const price      = parseFloat(document.getElementById('price').value);
-      const lossPct    = parseFloat(document.getElementById('lossPercent').value) || 10;
+      const lossPct    = parseFloat(document.getElementById('lossPercent').value) || 15;
       const customRaw  = document.getElementById('customLots').value;
 
       if (isNaN(investment) || isNaN(price) || investment <= 0 || price <= 0) {
@@ -446,30 +517,33 @@
       const tableRows = rows.map(r => `
         <tr>
           <td class="td-lot">${fmtN(r.lot)}</td>
-          <td class="td-qty">${fmtN(r.qty)}</td>
-          <td class="td-cost">₹${fmt(r.cost)}</td>
-          <td class="td-loss">₹${fmt(r.lossAmt)}</td>
-          <td class="td-exit">₹${fmt(r.lossExit)}</td>
+          <td class="td-qty">
+            <span class="copy-btn" onclick="copyVal('${r.qty}')" title="Tap to copy">${fmtN(r.qty)}</span>
+          </td>
+          <td class="td-exit">
+            <span class="copy-btn" onclick="copyVal('${r.lossExit.toFixed(2)}')" title="Tap to copy">${fmt(r.lossExit)}</span>
+          </td>
+          <td class="td-loss">${fmt(r.lossAmt)}</td>
+          <td class="td-cost">${fmt(r.cost)}</td>
         </tr>`).join('');
 
-      resultsEl.innerHTML = summaryHTML + `
-        <div class="card fadein" style="padding:20px 0 0;">
-          <div class="section-title" style="padding:0 20px 12px;">Lot Breakdown</div>
-          <div class="results-table-wrap">
+      resultsEl.innerHTML = `
+        <div class="card fadein" style="padding:12px 0 0; margin-bottom: 24px;">
+          <div class="results-table-wrap" style="border: none;">
             <table>
               <thead>
                 <tr>
                   <th>Lot Size</th>
-                  <th>Qty (lots × size)</th>
+                  <th>Qty</th>
+                  <th>Exit Price</th>
+                  <th>Loss Amount</th>
                   <th>Total Cost</th>
-                  <th>Loss Amount (−${lossPct}%)</th>
-                  <th>Exit Price (−${lossPct}%)</th>
                 </tr>
               </thead>
               <tbody>${tableRows || '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">No lot sizes selected.</td></tr>'}</tbody>
             </table>
           </div>
-        </div>`;
+        </div>` + summaryHTML;
     }
   </script>
 

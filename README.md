@@ -6,11 +6,11 @@ A fast, beautiful, single-file web tool to calculate how many lots you can buy w
 
 ## ✨ Features
 
-- **Default Lot Sizes** — Toggle chips for 20, 25, 30, 50, 60, 75; **20 and 60 are enabled by default**, others can be toggled on as needed
+- **Default Lot Sizes** — Toggle chips for 20, 25, 30, 50, 60, 65, 75; **20 and 65 are enabled by default**, others can be toggled on as needed
 - **Custom Lots** — Add any lot sizes (single or comma-separated)
-- **Loss Exit Price** — Defaults to 10%; set any % to instantly see at what price you should exit
+- **Loss Exit Price** — Defaults to 15%; set any % to instantly see at what price you should exit
 - **Summary Panel** — Max qty, price/share, loss amount, exit price, total amount at a glance
-- **Lot Breakdown Table** — Per lot: quantity, total cost, **loss amount in ₹**, and exit price
+- **Lot Breakdown Table** — Per lot: quantity (tap to copy), total cost, loss amount, and exit price (tap to copy)
 - **Mobile & Desktop Friendly** — Fully responsive layout
 - **No dependencies** — Single `index.html`, loads instantly with zero external JS
 
@@ -22,9 +22,9 @@ A fast, beautiful, single-file web tool to calculate how many lots you can buy w
 2. Fill in:
    - **Amount (₹)** — Your total investable capital
    - **Current Price (₹)** — The stock/asset's current price
-   - **Loss % (exit trigger)** — At what % loss should you exit? (default: 10)
+   - **Loss % (exit trigger)** — At what % loss should you exit? (default: 15)
    - **Custom Lots** _(optional)_ — Any additional lot sizes, comma-separated (e.g. `100, 200, 500`)
-3. Toggle on/off lot sizes using the chips — **20** and **60** are on by default; 25, 30, 50, 75 are available but off by default.
+3. Toggle on/off lot sizes using the chips — **20** and **65** are on by default; 25, 30, 50, 60, 75 are available but off by default.
 4. Hit **Calculate** (or press `Enter`).
 
 ---
